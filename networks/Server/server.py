@@ -2,7 +2,7 @@ import socket
 import sys
 
 HOST = 'localhost'
-PORT = 909
+PORT = 9001
 BUFFER = 1024
 
 def python_server():
@@ -19,15 +19,15 @@ def python_server():
         print("<", s.getsockname(), ">: " , msg)
         if (msg == "File Request"):
             conn.send("What File?".encode('utf-8'))
-            print("1")
-            file(conn)
+            file(conn,s)
         else:
-            msg = input("<YOU>")
+            msg = input("<YOU>: ")
             conn.send(msg.encode('utf-8'))
 
-def file(c):
+def file(c,s):
     filename = c.recv(BUFFER)
     filename = filename.decode('utf-8')
+    print("<", s.getsockname(), ">: " , filename)
     with open(filename, 'rb') as f:
         for data in f:
             c.sendall(data)
