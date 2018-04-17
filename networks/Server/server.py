@@ -2,7 +2,7 @@ import socket
 import sys
 
 HOST = 'localhost'
-PORT = 9001
+PORT = 9006
 BUFFER = 1024
 
 def python_server():
@@ -11,7 +11,6 @@ def python_server():
     s.listen(10)
     conn= None
     while (1):
-        
         if conn is None:
             conn, addr = s.accept()
         msg = conn.recv(BUFFER)

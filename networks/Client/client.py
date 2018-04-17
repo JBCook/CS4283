@@ -4,7 +4,7 @@ import sys
 import pygame
 
 HOST = 'localhost'    
-PORT = 9001
+PORT = 9006
 BUFFER =1024
 
 queue = []
@@ -19,7 +19,6 @@ def python_client():
     curr_song = ""
     
     while (1):
-        print(serv)
         if serv == False:
             msg = input("<YOU>: ")
             s.send(msg.encode('utf-8'))
@@ -27,7 +26,6 @@ def python_client():
         rec_msg = s.recv(BUFFER)
         rec_msg = rec_msg.decode('utf-8')
         print("<" + HOST +">: " + rec_msg)
-        print(rec_msg)
         if (rec_msg == "What File?"):
             file(s)
             s.send(str(queue).encode());
@@ -35,31 +33,30 @@ def python_client():
             rec_msg = rec_msg.decode('utf-8')
             print("<" + HOST +">: " + rec_msg)
         if (rec_msg == "PLAY SONG"):
-            print("in play song")
             serv = True
             curr_song = queue.pop()
             pygame.mixer.music.load (curr_song)
             pygame.mixer.music.play()     
-            s.send((curr_song+ " is playing").encode());
+            #s.send((curr_song+ " is playing").encode());
         if (rec_msg == "PAUSE SONG"):
             pygame.mixer.music.pause()
             serv = True
-            s.send("Music Paused".encode())
+            #s.send("Music Paused".encode())
         if (rec_msg == "RESUME SONG"):
             serv = True
             pygame.mixer.music.unpause()
             s.send("Music Resumed".encode())
         if (rec_msg == "NEXT SONG"):
-            serv = True
+            #serv = True
             if(queue != []):
                 curr_song = queue.pop()
                 pygame.mixer.music.load (curr_song)
                 pygame.mixer.music.play()
-                s.send((curr_song + " is now playing").encode())
+                #s.send((curr_song + " is now playing").encode())
             else:
                 s.send("Playlist is Empty. Load More Songs".encode())
+                serv = True
         else:
-            print("CHANGING")
             serv = False
 def file(s):
     name = input("<YOU>: ")
