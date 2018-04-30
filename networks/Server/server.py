@@ -35,7 +35,7 @@ def file(c, s):
                 c.sendall(data)
             c.send("END".encode('utf-8'))
     except EnvironmentError:
-        c.send("File not found.".encode('utf-8'))
+        c.send("NOTFOUND".encode('utf-8'))
 
 
 if __name__ == "__main__":

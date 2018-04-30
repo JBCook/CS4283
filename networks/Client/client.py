@@ -79,18 +79,21 @@ def file(s):
     name = input("<YOU>: ")
     s.send(name.encode('utf-8'))
     try:
-        with open('new_' + name, 'wb') as f:
-            print("ALERT...writing to file..")
-            while True:
-                data = s.recv(BUFFER)
-                if data[-3:] == "END".encode('utf-8'):
-                    print("ALERT...finished writing to file..")
-                    queue.append('new_'+name)
-                    break
-                if not data:
-                    break
-                f.write(data)
-            f.close()
+        data = s.recv(BUFFER);
+        if data == "NOTFOUND":
+            print("Song not found.")
+        else:
+            with open('new_' + name, 'wb') as f:
+                print("ALERT...writing to file..")
+                while True:
+                    if data[-3:] == "END".encode('utf-8'):
+                        print("ALERT...finished writing to file..")
+                        queue.append('new_'+name)
+                        break
+                    if not data:
+                        break
+                    f.write(data)
+                f.close()
     except EnvironmentError as e:
         print("Error: " + e)
     return
